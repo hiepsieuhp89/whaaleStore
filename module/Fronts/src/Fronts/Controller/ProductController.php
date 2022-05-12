@@ -279,7 +279,7 @@ class ProductController extends AbstractActionController {
         $session_key->key = '?key=' . $url_key;
         $session_key->keyfilter=$key;
 
-        if ($key != null) {
+        if ($key != null && $key != '') {
             $select = new Select();
             $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
             $data_search = $this->getProductTable()->search_product($key);
@@ -292,9 +292,25 @@ class ProductController extends AbstractActionController {
                     ->setPageRange(5);
             return array(
                 'page' => $page,
+                'keysearch' => $key,
                 'paginator' => $paginator,
             );
         }
+        // không nhập từ khóa
+        $select = new Select();
+        $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
+        $data_product = $this->getProductTable()->show_product();
+            
+        $itemsPerPage = 20;
+        $data_product->current();
+        $paginator = new Paginator(new paginatorIterator($data_product));
+        $paginator->setCurrentPageNumber($page)
+                ->setItemCountPerPage($itemsPerPage)
+                ->setPageRange(5);
+        return new ViewModel(array(
+            'page' => $page,
+            'paginator' => $paginator,
+        ));
     }
 	 public function searchajaxAction() {
         $_key = $this->params()->fromPost('key');        
