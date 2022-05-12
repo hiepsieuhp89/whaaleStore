@@ -10,6 +10,8 @@ $username_guest = $session_customer_guest->name_customer;
 
 $session_user = new Container('userlogin');
 $username = $session_user->username;
+
+$keysearch = $_GET['key'];
 ?>
 <div id="header" class="header">
     <div class="top-header">
@@ -105,7 +107,12 @@ $username = $session_user->username;
                 <form action="<?php echo WEB_PATH ?>/tim-kiem.html" method="get" class="form-inline">
 
                     <div class="form-group input-serach">
-                         <input id="search-data1" type="text" name="key" onkeyup="searchproduct()"  placeholder="Từ khóa tìm kiếm..." autocomplete="off">
+                         <input id="search-data1" type="text" name="key" onkeyup="searchproduct()"  placeholder="Từ khóa tìm kiếm..." autocomplete="off" 
+                            <?php 
+                                // if(isset($keysearch))
+                                echo ' value="'.$keysearch.'"';
+                            ?>
+                         >
                     </div>
                     <button type="submit" class="pull-right btn-search"></button>
                 </form>
